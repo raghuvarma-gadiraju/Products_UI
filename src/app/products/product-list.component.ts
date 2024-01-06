@@ -14,7 +14,7 @@ import {ProductService} from './product.service'
 export class ProductListComponent implements OnInit {
   pageTitle: string = 'Products';
   showImage: boolean = false;
-  imageWidth: Number = 20;
+  imageWidth: Number = 40;
   imageMargin: Number = 2;
   private _listFilter : string = '';
   errorMessage: string = '';
