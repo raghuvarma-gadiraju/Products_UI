@@ -1,0 +1,39 @@
+<table class="table" *ngIf="products.length">
+    <div class="col-md-2">Filter by:</div>
+    <div>{{pageTitle}}</div>
+    <div>
+        <input type="text"
+        [(ngModel)]="listFilter"/>
+    </div>
+    <thead>
+        <th>
+            <button KendoButton (click)="toggleImage()">{{showImage ? 'Hide' : 'Show'}} Image</button>
+        </th>
+        <th>Product</th>
+        <th>Code</th>
+        <th>Available</th>
+        <th>Price</th>
+        <th>Rating</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let product of filteredProducts">
+            <td>
+                <img *ngIf ='showImage'
+                    [src]="product.imageUrl"
+                    [style.width.px]="imageWidth"
+                    [style.margin.px]="imageMargin">
+            </td>
+            <td>{{product.productName | lowercase}}</td>
+            <td>{{product.productCode | convertToSpace:'-'}}</td>
+            <td>{{product.releaseDate}}</td>
+            <td>{{product.price | currency:'USD'}}</td>
+            <td><pm-star [rating]="product.starRating"
+                (ratingClicked)="onRatingClicked($event)" ></pm-star>
+            </td>
+
+
+        </tr>
+    </tbody>
+
+</table>
+
