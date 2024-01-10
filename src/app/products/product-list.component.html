@@ -1,32 +1,33 @@
-<table class="table" *ngIf="products.length">
+<div>
     <div class="col-md-2">Filter by:</div>
-    <div>{{pageTitle}}</div>
-    <div>
-        <input type="text"
-        [(ngModel)]="listFilter"/>
-    </div>
+    <div><input type="text" [(ngModel)]="listFilter"/></div>
+<table class="table" *ngIf="products.length" id="productsTable" #myDiv>
     <thead>
+        <th>select</th>
         <th>
             <button KendoButton (click)="toggleImage()">{{showImage ? 'Hide' : 'Show'}} Image</button>
         </th>
+        
         <th>Product</th>
         <th>Code</th>
         <th>Available</th>
         <th>Price</th>
         <th>Rating</th>
     </thead>
-    <tbody>
-        <tr *ngFor="let product of filteredProducts">
+    <tbody >
+        
+        <tr *ngFor="let product of filteredProducts"id="CheckboxProducts"><input type="checkbox" >  
             <td>
                 <img *ngIf ='showImage'
                     [src]="product.imageUrl"
                     [style.width.px]="imageWidth"
                     [style.margin.px]="imageMargin">
             </td>
+            
             <td>{{product.productName | lowercase}}</td>
             <td>{{product.productCode | convertToSpace:'-'}}</td>
             <td>{{product.releaseDate}}</td>
-            <td>{{product.price | currency:'USD'}}</td>
+            <td id="price">{{product.price}}</td>
             <td><pm-star [rating]="product.starRating"
                 (ratingClicked)="onRatingClicked($event)" ></pm-star>
             </td>
@@ -35,5 +36,15 @@
         </tr>
     </tbody>
 
+
 </table>
+</div>
+<div >
+
+    <button (click)="addToCart()">add to cart</button>
+    
+</div>
+<div>
+    <textarea id="addedToCart" >{{finalPrice}}</textarea>
+</div>
 
