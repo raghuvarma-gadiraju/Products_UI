@@ -16,7 +16,7 @@
     </thead>
     <tbody >
         
-        <tr *ngFor="let product of filteredProducts"id="CheckboxProducts"><input type="checkbox" >  
+        <tr *ngFor="let product of filteredProducts"id="CheckboxProducts"><input type="checkbox" (click)="addToCart()" >  
             <td>
                 <img *ngIf ='showImage'
                     [src]="product.imageUrl"
@@ -39,11 +39,7 @@
 
 </table>
 </div>
-<div >
 
-    <button (click)="addToCart()">add to cart</button>
-    
-</div>
 <div>
     <textarea id="addedToCart" >{{finalPrice}}</textarea>
 </div>
