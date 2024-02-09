@@ -18,13 +18,26 @@ export class ProductListComponent implements OnInit {
   imageMargin: Number = 2;
   private _listFilter : string = '';
   errorMessage: string = '';
-  finalPrice: string = ''
-  @ViewChild('myDiv') myDiv!: ElementRef;
+  finalPrice: string = '';
+  showProducts: boolean = false;
   constructor(private productService : ProductService){
-
   }
   products: IProduct[] = []
   filteredProducts : IProduct[] = [];
+  productCategory = ['Bat','Gloves','pads','Gaurds','Helmet'];
+
+  ngOnInit(): void {   
+    this.productService.getProducts().subscribe({
+      next: products => {this.products = products;
+        this.filteredProducts = this.products;
+       
+      },
+      error: err => this.errorMessage = err
+    });
+   
+    
+  }
+
 
 
   get listFilter() : string {
@@ -32,33 +45,46 @@ export class ProductListComponent implements OnInit {
   }
 
   set listFilter(value: string){
-    this._listFilter = value
-    this.filteredProducts = this.performFilter(value)
+    this._listFilter = value;
+    this.searchProducts(value,document.getElementById('pcdropdown'))
   }
 
 
-
-
-  performFilter(value: string) : IProduct[] {
-    value = value.toLocaleLowerCase();
+  searchProductsTable(dropdown: any) : IProduct[] {
+    let e = dropdown.value;
     return this.products.filter(
-      (product: IProduct) => product.productName.toLocaleLowerCase().includes(value)
+      (product: IProduct) => product.category.includes(e)
     )
   }
+
+  filterTable(){
+    this.filteredProducts = this.searchProductsTable(document.getElementById("pcdropdown"));
+  }
+
+  
+
+  searchProducts (value: string, dropdown: any) : void {
+    value = value.toLocaleUpperCase();
+    let dropdown_items = dropdown.querySelectorAll('.clist');
+    for (let i=0; i<dropdown_items.length; i++) {
+        if (dropdown_items[i].innerHTML.toUpperCase().includes(value))
+            dropdown_items[i].style.display = 'block';
+        else
+            dropdown_items[i].style.display = 'none';
+    }
+  }
+
 
   toggleImage() {
     this.showImage = !this.showImage   
   }
+  
+  toggleProducts() {
+  this.showProducts = !this.showProducts;
 
-  ngOnInit(): void {   
-    this.productService.getProducts().subscribe({
-      next: products => {this.products = products;
-        this.filteredProducts = this.products;
-      },
-      error: err => this.errorMessage = err
-    });
-    
-  }
+}
+
+
 
  onRatingClicked(message: string){
       this.pageTitle = "Rating" + message;
@@ -93,7 +119,7 @@ export class ProductListComponent implements OnInit {
  
   let discountedPrice = max*0.8;
   price.push(discountedPrice)
-}
+  }
   
   let sum=0;
   for (var k = 0; k< price.length; k++){
@@ -102,13 +128,19 @@ export class ProductListComponent implements OnInit {
 
   this.finalPrice = '';
   return this.finalPrice = this.finalPrice + 'Total Price: ' + sum;
+  }
   
-  
+
 }
-  
+
+
+
+
+
+
   
 
 
  
 
-}
+
